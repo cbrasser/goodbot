@@ -236,6 +236,11 @@ client.on('message', message => {
                     });
                 });
                 break;
+                
+               case 'ayy':
+                const ayy = client.emojis.find("name", "ayy");
+                message.reply(`${ayy} LMAO`);
+               break;
 
         }
 
