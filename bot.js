@@ -2,11 +2,13 @@ const prefixes = ['!', 'doggo '];
 
 
 const responseObject = {
-    "ayy": "Ayy, lmao!",
-    "wat": "Say what?",
-    "lol": "roflmao",
+    "ayy": "You mean: Ayy, lmao!",
+    "wat": "You mean: Say what?",
+    "lol": "You mean: roflmao",
     "ClaDos": "You mean supercool dude?",
-    "Mod": "Faggot"
+    "mod": "You mean: Faggot?",
+    "yolo": "You mean: Carpe Diem?",
+    "NFA": "Acronym for: No Fun Allowed"
 };
 
 const sql = require("sqlite");
@@ -233,7 +235,7 @@ client.on('message', message => {
 
                     // The whole response has been received.
                     resp.on('end', () => {
-                        list = JSON.parse(data).list;
+                        let list = JSON.parse(data).list;
                         // respond in a hooman friendly way
                         let firstMessage = 'HERE\'S WHAT I KNOW ABOUT ' + '<<< ' + argument + ' >>> :\n';
                         let listDelimiter = 'OR:';
