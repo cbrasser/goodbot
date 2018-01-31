@@ -1,4 +1,4 @@
-const prefix = '!';
+const prefixes = ['!', 'doggo '];
 
 
 const responseObject = {
@@ -8,7 +8,6 @@ const responseObject = {
     "ClaDos": "You mean supercool dude?",
     "Mod": "Faggot"
 };
-
 
 const sql = require("sqlite");
 const Discord = require('discord.js');
@@ -27,9 +26,17 @@ client.on('ready', () => {
 
 client.on('message', message => {
     if (message.channel.type === "dm") return;
-    if (message.content.match(/^!.+/)) {
-
-        const args = message.content.slice(prefix.length).trim().split(/ +/g);
+    let found = false;
+    let foundIndex = -1;
+    for (let i = 0; i < prefixes.length; i++) {
+        let regex = new RegExp('^' + prefixes[i] + '.+');
+        if (message.content.match(regex)) {
+            found = true;
+            foundIndex = i;
+        }
+    }
+    if (found) {
+        const args = message.content.slice(prefixes[foundIndex].length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();
         if (responseObject[message.content]) {
             message.channel.send(responseObject[message.content]);
@@ -194,15 +201,24 @@ client.on('message', message => {
 
 
             case 'commands':
-                message.reply('I can do the following:\n' +
-                    '!pet -> Thank me for my services\n' +
-                    '!goodboyCount -> See how much of a good boy i am\n' +
-                    '!points/!level -> See how much time you wasted in here..\n' +
-                    '!maxSnipe -> get the longest distance snipe in fortnite\n' +
-                    '!insertSnipe [distance]-> Insert a snipe of yours into the DB\n' +
-                    '!mostKills-> Get highest kill game for all modes in fortnite BR\n' +
-                    '!insertWin [solo|duo|squad] [numberOfKills] [names separated with spaces]-> Insert a win of yours into the DB\n' +
-                    '!ud [word(s)] ask Urban Dictionary for a word(s) you want to know about.\n');
+                let commandsResponse = 'ARF! YOU CAN INVOKE ME THROUGH: ';
+                for (let i = 0; i < prefixes.length; i++) {
+                    commandsResponse += '\'' + prefixes[i] + '\'';
+                    if (i !== prefixes.length - 1) {
+                        commandsResponse+= ' OR ';
+                    }
+                }
+                commandsResponse += '\nI can do the following:\n' +
+                    'pet -> Thank me for my services\n' +
+                    'goodboyCount -> See how much of a good boy i am\n' +
+                    'points/!level -> See how much time you wasted in here..\n' +
+                    'maxSnipe -> get the longest distance snipe in fortnite\n' +
+                    'insertSnipe [distance]-> Insert a snipe of yours into the DB\n' +
+                    'mostKills-> Get highest kill game for all modes in fortnite BR\n' +
+                    'insertWin [solo|duo|squad] [numberOfKills] [names separated with spaces]-> Insert a win of yours into the DB\n' +
+                    'ud [word(s)] ask Urban Dictionary for a word(s) you want to know about.\n';
+
+                message.reply(commandsResponse);
                 break;
 
 
@@ -229,7 +245,7 @@ client.on('message', message => {
                             if (i === (list.length - 1) || i === (maxDefinitions - 1)) {
                                 // do nothing
                             }
-                            else{
+                            else {
                                 message.reply(listDelimiter);
                             }
                         }
