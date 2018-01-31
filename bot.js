@@ -11,6 +11,8 @@ const responseObject = {
     "NFA": "Acronym for: No Fun Allowed"
 };
 
+
+const token = process.env.TOKEN;
 const sql = require("sqlite");
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -37,6 +39,31 @@ client.on('message', message => {
             foundIndex = i;
         }
     }
+
+
+    if (!message.author.bot) {
+        sql.get(`SELECT * FROM scores WHERE userId ="${message.author.id}"`).then(row => {
+            if (!row) {
+                sql.run("INSERT INTO scores (userId, points, level) VALUES (?, ?, ?)", [message.author.id, 1, 0]);
+            } else {
+                let curLevel = Math.floor(5 * Math.ln(row.points + 1));
+                if (curLevel > row.level) {
+                    row.level = curLevel;
+                    sql.run(`UPDATE scores SET points = ${row.points + 1}, level = ${row.level} WHERE userId = ${message.author.id}`);
+                    message.reply(`You've leveled up to level **${curLevel}**! You're a good boye!`);
+                }
+                sql.run(`UPDATE scores SET points = ${row.points + 1} WHERE userId = ${message.author.id}`);
+            }
+        }).catch(() => {
+            console.error;
+            sql.run("CREATE TABLE IF NOT EXISTS scores (userId TEXT, points INTEGER, level INTEGER)").then(() => {
+                sql.run("INSERT INTO scores (userId, points, level) VALUES (?, ?, ?)", [message.author.id, 1, 0]);
+            });
+        });
+
+    }
+
+
     if (found) {
         const args = message.content.slice(prefixes[foundIndex].length).trim().split(/ +/g);
         const command = args.shift().toLowerCase();
@@ -45,27 +72,7 @@ client.on('message', message => {
         }
 
         //Dont count points for bot users
-        if (!message.author.bot) {
-            sql.get(`SELECT * FROM scores WHERE userId ="${message.author.id}"`).then(row => {
-                if (!row) {
-                    sql.run("INSERT INTO scores (userId, points, level) VALUES (?, ?, ?)", [message.author.id, 1, 0]);
-                } else {
-                    let curLevel = Math.floor(0.1 * Math.sqrt(row.points + 1));
-                    if (curLevel > row.level) {
-                        row.level = curLevel;
-                        sql.run(`UPDATE scores SET points = ${row.points + 1}, level = ${row.level} WHERE userId = ${message.author.id}`);
-                        message.reply(`You've leveled up to level **${curLevel}**! You're a good boye!`);
-                    }
-                    sql.run(`UPDATE scores SET points = ${row.points + 1} WHERE userId = ${message.author.id}`);
-                }
-            }).catch(() => {
-                console.error;
-                sql.run("CREATE TABLE IF NOT EXISTS scores (userId TEXT, points INTEGER, level INTEGER)").then(() => {
-                    sql.run("INSERT INTO scores (userId, points, level) VALUES (?, ?, ?)", [message.author.id, 1, 0]);
-                });
-            });
 
-        }
 
 
         switch (command) {
@@ -237,28 +244,26 @@ client.on('message', message => {
                     resp.on('end', () => {
                         let list = JSON.parse(data).list;
                         // respond in a hooman friendly way
-                        let firstMessage = 'HERE\'S WHAT I KNOW ABOUT ' + '<<< ' + argument + ' >>> :\n';
-                        let listDelimiter = 'OR:';
                         let maxDefinitions = 3;
-
-                        message.reply(firstMessage);
                         for (let i = 0; i < list.length && i < maxDefinitions; i++) {
-                            message.reply('DEFINITION:\n' + list[i].definition + '\n\nEXAMPLE:\n' + list[i].example);
-                            if (i === (list.length - 1) || i === (maxDefinitions - 1)) {
-                                // do nothing
+                            let urbanDictionaryResponse = '';
+                            if(i===0){
+                                urbanDictionaryResponse += 'HERE\'S WHAT I KNOW ABOUT ' + '[   ' + argument + '  ]:\n';
                             }
                             else {
-                                message.reply(listDelimiter);
+                                urbanDictionaryResponse+= '\nOR:\n';
                             }
+                            urbanDictionaryResponse += 'DEFINITION:\n' + list[i].definition + '\n\nEXAMPLE:\n' + list[i].example +'\n\n';
+                            message.reply(urbanDictionaryResponse);
                         }
                     });
                 });
                 break;
-                
-               case 'ayy':
+
+            case 'ayy':
                 const ayy = client.emojis.find("name", "ayy");
                 message.reply(`${ayy} LMAO`);
-               break;
+                break;
 
         }
 
