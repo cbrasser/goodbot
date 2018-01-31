@@ -1,0 +1,16 @@
+{
+  "name": "ClaDosBot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ClaDosDotnet",
+  "license": "Do whatever the fuck you want with it license",
+  "dependencies": {
+    "discord.io": "^2.5.3",
+    "discord.js": "^11.3.0",
+    "winston": "^2.4.0"
+  }
+}
