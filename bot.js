@@ -6,6 +6,7 @@ const responseObject = {
     "yolo": "You mean: Carpe Diem?",
     "NFA": "Acronym for: No Fun Allowed"
 };
+const token = 'NDA3NTU5NDg1MzczMjg0MzUz.DVDQ7Q.w4WE9LpInvReCOyUtfahNLFyLpo';
 
 //Dependencies
 const Discord = require('discord.js');
@@ -87,7 +88,7 @@ client.on('message', message => {
 client.on('guildMemberAdd', member => {
     try {
         let commandFile = require(`./utility/addMember.js`);
-        commandFile.run(client, message);
+        commandFile.run(client, member);
     } catch (err) {
         console.error(err);
     }
