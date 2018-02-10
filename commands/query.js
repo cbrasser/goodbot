@@ -5,13 +5,17 @@ exports.run = (client, message, args) => {
         for (let i = 0; i < args.length; i++) {
             query += args[i] + ' ';
         }
-        console.log(query)
         sql.all(query).then(rows => {
             if (!rows) {
                 message.reply('No result for your query')
             } else {
                 rows.forEach(function (row) {
-                    message.reply(JSON.stringify(row))
+                    let attributes = Object.keys(row);
+                    let reply  = ''
+                    for(let i=0;i<attributes.length;i++){
+                        reply+=attributes[i]+': '+row[attributes[i]]+', '
+                    }
+                    message.reply(reply)
                 });
             }
         }).catch(() => {

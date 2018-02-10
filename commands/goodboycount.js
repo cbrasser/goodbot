@@ -1,6 +1,6 @@
 exports.run = (client, message, args) => {
     const sql = require("sqlite");
-    sql.get(`SELECT pettage FROM botstats `).then(row => {
+    sql.get(`SELECT pettage FROM botstats`).then(row => {
         if (!row) {
             message.reply('NO ONE CALLED ME GOOD BOY YET =(')
         } else {

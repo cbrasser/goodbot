@@ -6,7 +6,7 @@ const responseObject = {
     "yolo": "You mean: Carpe Diem?",
     "NFA": "Acronym for: No Fun Allowed"
 };
-const token = 'TOKEN';
+const token ='TOKEN';
 
 //Dependencies
 const Discord = require('discord.js');
