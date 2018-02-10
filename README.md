@@ -10,3 +10,6 @@ Up until now you can:
  - Most importantly: Pet the Dog
  
  To get this running you need node.js installed, as well as discord.js and sqlite (both via node), and the token you get from the discord dev page.
+
+Credits:
+ - To the creatorfo this https://github.com/melmsie/Dank-Memer repository for some influences and ideas on how to fetch posts from reddit
