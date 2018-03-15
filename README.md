@@ -8,7 +8,7 @@ The bot includes:
 the involved players and the amount of kills. You can also store sniper kills with the distance an a video url as "evidence". Naturally the bot can give you the longest kill and it's video via command.
 - You can write your own "SELECT" query on the database (theres a command for the schema)
 - You can get dank memes en mass
-- There's a command to get quick facts about a search term from urban dictionary
+- There's a command to get quick facts about a search term from urban dictionary (Special thanks to SilvoSposetti)
 - (Still in development) Get your player stats from fortnitetracker via command directly into discord
 - Pet the good boy to thank him for his services
  
