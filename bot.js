@@ -1,3 +1,4 @@
+require('dotenv').config()
 const prefixes = ['!', 'doggo '];
 const responseObject = {
     "ayy": "Ayy, lmao!",
@@ -6,9 +7,10 @@ const responseObject = {
     "yolo": "You mean: Carpe Diem?",
     "NFA": "Acronym for: No Fun Allowed"
 };
-const token ='TOKEN';
+const token = process.env.TOKEN;
 
 //Dependencies
+
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const http = require('http');
@@ -35,9 +37,9 @@ fs.readdir("./commands/", (err, files) => {
 client.on('message', message => {
     //No commands in dms allowed
     if (message.channel.type === "dm") return;
-    //we dont want to track points for bots
+    //we don't want to track points for bots
     if (!message.author.bot) {
-        //quick reply for messages specified above as a responceObject
+        //quick reply for messages specified above as a response Object
         if (responseObject[message.content]) {
             message.channel.send(responseObject[message.content]);
         }
@@ -73,7 +75,7 @@ client.on('message', message => {
                 commandFile.run(client, message, args);
             } else {
                 console.log('some smartass tried to access a dir')
-                message.reply('Dont try to access stuff you are not allowed to, not a good boye!');
+                message.reply('Don\'t try to access stuff you are not allowed to, not a good boye!');
             }
         } catch (err) {
             console.error(err);
