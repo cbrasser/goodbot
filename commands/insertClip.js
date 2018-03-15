@@ -6,11 +6,11 @@ function isUrl(s) {
 exports.run = (client, message, args) => {
     const sql = require("sqlite");
     if (args.length > 0 && isUrl(String(args[0]))) {
-        sql.run("INSERT INTO clips (player, videoLink) VALUES (?,?)", [message.author.username, String(args[0])]).then(() => {
-            message.reply('I inserted your highlight clip- GG!')
+        sql.run("INSERT INTO clips (player, videoLink, guildId) VALUES (?,?,?)", [message.author.username, String(args[0]), message.guild.id]).then(() => {
+            message.reply('I inserted your clip - GG!')
         }).catch(() => {
-            sql.run("CREATE TABLE IF NOT EXISTS clips (player TEXT,videoLink TEXT)").then(() => {
-                sql.run("INSERT INTO snipes (player,videoLink) VALUES (?, ?)", [message.author.username, args[0]]);
+            sql.run("CREATE TABLE IF NOT EXISTS clips (player TEXT,videoLink TEXT, guildId TEXT)").then(() => {
+                sql.run("INSERT INTO clips (player,videoLink) VALUES (?, ?,?)", [message.author.username, args[0], message.guild.id]);
                 message.reply('I inserted your highlight clip - GG!')
             });
         });

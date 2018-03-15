@@ -10,7 +10,6 @@ const responseObject = {
 const token = process.env.TOKEN;
 
 //Dependencies
-
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const http = require('http');
@@ -18,12 +17,16 @@ const express = require('express');
 const app = express();
 const fs = require("fs");
 const sql = require("sqlite");
+const logger = require('./logger');
+
+logger.info('Started process at '+new Date())
 
 sql.open("./score.sqlite");
 
 client.on('ready', () => {
     console.log('AM WAKE!');
 });
+
 
 fs.readdir("./commands/", (err, files) => {
     if (err) return console.error(err);
@@ -87,12 +90,20 @@ client.on('message', message => {
 
 });
 
+client.on('guildDelete', guild => {
+    logger.info('I have left guild '+ guild.name+ ' at '+new Date());
+});
+
+client.on('guildCreate',guild => {
+    logger.info('I have joined guild '+guild.name+' at '+new Date());
+})
+
 client.on('guildMemberAdd', member => {
     try {
         let commandFile = require(`./utility/addMember.js`);
         commandFile.run(client, member);
     } catch (err) {
-        console.error(err);
+        logger.error(err);
     }
 });
 

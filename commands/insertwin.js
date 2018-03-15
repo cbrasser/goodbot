@@ -3,11 +3,11 @@ exports.run = (client, message, args) => {
     switch (args[0]) {
         case 'solo':
             if (Number(args[1]) && args.length > 2) {
-                sql.run("INSERT INTO wins (mode, kills, players) VALUES (?, ?, ?)", [args[0], args[1], args[2]]).then(() => {
+                sql.run("INSERT INTO wins (mode, kills, players, guildId) VALUES (?, ?, ?,?)", [args[0], args[1], args[2],message.guild.id]).then(() => {
                     message.reply('I saved your win - GG!')
                 }).catch(() => {
-                    sql.run("CREATE TABLE IF NOT EXISTS wins (mode TEXT, kills INTEGER, players TEXT)").then(() => {
-                        sql.run("INSERT INTO wins (mode, kills, players) VALUES (?, ?, ?)", [args[0], args[1], args[2]]).then(()=>{
+                    sql.run("CREATE TABLE IF NOT EXISTS wins (mode TEXT, kills INTEGER, players TEXT, guildId TEXT)").then(() => {
+                        sql.run("INSERT INTO wins (mode, kills, players, guildId) VALUES (?,?,?,?)", [args[0], args[1], args[2],message.guild.id]).then(()=>{
                             message.reply('I saved your win - GG!')
                         });
                     });
@@ -23,11 +23,11 @@ exports.run = (client, message, args) => {
                 for (let i = 2; i < args.length; i++) {
                     names += args[i] + ', ';
                 }
-                sql.run("INSERT INTO wins (mode, kills, players) VALUES (?, ?, ?)", [args[0], args[1], names]).then(() => {
+                sql.run("INSERT INTO wins (mode, kills, players, guildId) VALUES (?, ?, ?,?)", [args[0], args[1], names],message.guild.id).then(() => {
                     message.reply('I saved your win - GG!')
                 }).catch(() => {
-                    sql.run("CREATE TABLE IF NOT EXISTS wins (mode TEXT, kills INTEGER, players TEXT)").then(() => {
-                        sql.run("INSERT INTO wins (mode, kills, players) VALUES (?, ?, ?)", [args[0], args[1], names]).then(()=>{
+                    sql.run("CREATE TABLE IF NOT EXISTS wins (mode TEXT, kills INTEGER, players TEXT, guildId TEXT)").then(() => {
+                        sql.run("INSERT INTO wins (mode, kills, players, guildId) VALUES (?, ?, ?,?)", [args[0], args[1], names, message.guild.id]).then(()=>{
                             message.reply('I saved your win - GG!')
                         });
                     });
@@ -43,11 +43,11 @@ exports.run = (client, message, args) => {
                 for (let i = 2; i < args.length; i++) {
                     names += args[i] + ', ';
                 }
-                sql.run("INSERT INTO wins (mode, kills, players) VALUES (?, ?, ?)", [args[0], args[1], names]).then(() => {
+                sql.run("INSERT INTO wins (mode, kills, players, guildId) VALUES (?, ?, ?,?)", [args[0], args[1], names, message.guild.id]).then(() => {
                     message.reply('I saved your win - GG!')
                 }).catch(() => {
-                    sql.run("CREATE TABLE IF NOT EXISTS wins (mode TEXT, kills INTEGER, players TEXT)").then(() => {
-                        sql.run("INSERT INTO wins (mode, kills, players) VALUES (?, ?, ?)", [args[0], args[1], names]).then(()=>{
+                    sql.run("CREATE TABLE IF NOT EXISTS wins (mode TEXT, kills INTEGER, players TEXT, guildId TEXT)").then(() => {
+                        sql.run("INSERT INTO wins (mode, kills, players, guildId) VALUES (?, ?, ?,?)", [args[0], args[1], names, message.guild.id]).then(()=>{
                             message.reply('I saved your win - GG!')
                         });
                     });

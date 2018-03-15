@@ -6,11 +6,11 @@ function isUrl(s) {
 exports.run = (client, message, args) => {
     const sql = require("sqlite");
     if (args.length > 1 && Number(args[0]) > 0 && isUrl(String(args[1]))) {
-        sql.run("INSERT INTO snipes (distance,player, videoLink) VALUES (?, ?,?)", [Number(args[0]), message.author.username, String(args[1])]).then(() => {
+        sql.run("INSERT INTO snipes (distance,player, videoLink, guildId) VALUES (?, ?,?,?)", [Number(args[0]), message.author.username, String(args[1]),message.guild.id]).then(() => {
             message.reply('I inserted your snipe of ' + args[0] + ' meters - GG!')
         }).catch(() => {
-            sql.run("CREATE TABLE IF NOT EXISTS snipe (distance INTEGER,player TEXT,videoLink TEXT)").then(() => {
-                sql.run("INSERT INTO snipes (distance,player,videoLink) VALUES (?, ?, ?)", [args[0], message.author.username, args[1]]);
+            sql.run("CREATE TABLE IF NOT EXISTS snipe (distance INTEGER,player TEXT,videoLink TEXT, guildId TEXT)").then(() => {
+                sql.run("INSERT INTO snipes (distance,player,videoLink, guildId) VALUES (?, ?, ?,?)", [args[0], message.author.username, args[1],message.guild.id]);
                 message.reply('I inserted your snipe of ' + args[0] + ' meters - GG!')
             });
         });
