@@ -14,5 +14,12 @@ the involved players and the amount of kills. You can also store sniper kills wi
  
  To get this running you need node.js installed, as well as discord.js and sqlite (both via node), and the token you get from the discord dev page.
 
+You can also invite the bot into your discord guild directly via: 
+https://discordapp.com/api/oauth2/authorize?client_id=407559485373284353&permissions=452672&scope=bot
+
+Be aware that the bot is hosted on a free hoster and might be down from time to time.
+
+If you are using parts of my code, I'd highly appreciate if you'd mention it, thanks :)
+
 Credits:
  - To the creator of this https://github.com/melmsie/Dank-Memer repository for some nice ideas and his dank multireddit
