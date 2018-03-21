@@ -58,6 +58,14 @@ exports.run = (client, message, args) => {
                 {
                     name: "!brstats [platform] [fortnite username]",
                     value: "Git gud"
+                },
+                {
+                    name: "!gif [tag]",
+                    value: "Random Giph with specified tag (can be left out)"
+                },
+                {
+                    name: "!sticker [tag]",
+                    value: "Random Sticker with specified tag (can be left out)"
                 }
             ],
             timestamp: new Date(),
