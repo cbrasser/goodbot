@@ -22,23 +22,23 @@ exports.run = async function (client, message, args) {
     const sql = require("sqlite");
 
     let memeIndex = 0;
-    sql.get(`SELECT memeCount FROM botstats `).then(row => {
+    sql.get(`SELECT memeCount FROM botstats WHERE guildId = "${message.guild.id}"`).then(row => {
         if (!row) {
-            sql.run("INSERT INTO botstats (memeCount) VALUES (?)", [0]);
-        } else {
-            memeIndex = row.memeCount;
-            if (memeIndex > 50) {
-                sql.run(`UPDATE botstats SET memeCount = 0`);
-                getMeme(message, 0);
-            } else {
-                getMeme(message, memeIndex);
-            }
-            sql.run(`UPDATE botstats SET memeCount = ${row.memeCount + 1}`);
-        }
-    }).catch(() => {
-        sql.run("CREATE TABLE IF NOT EXISTS botstats (pettage INTEGER, memeCount INTEGER)").then(() => {
-            sql.run("INSERT INTO botstats (pettage, memeCount) VALUES (?,?)", [0, 0]);
-            memeIndex = 0;
+        sql.run("INSERT INTO botstats (memeCount, guildId) VALUES (?,?)", [0,message.guild.id]);
+    } else {
+        memeIndex = row.memeCount;
+        if (memeIndex > 80) {
+            sql.run(`UPDATE botstats SET memeCount = 0 WHERE guildId = "${message.guild.id}"`).then( () =>{
+                memeIndex =0;
         });
-    });
+        }
+        getMeme(message, memeIndex);
+        sql.run(`UPDATE botstats SET memeCount = ${memeIndex + 1} WHERE guildId = "${message.guild.id}"`);
+    }
+}).catch(() => {
+        sql.run("CREATE TABLE IF NOT EXISTS botstats (pettage INTEGER, memeCount INTEGER, guildId TEXT)").then(() => {
+        sql.run("INSERT INTO botstats (pettage, memeCount, guildId) VALUES (?,?,?)", [0, 0,message.guild.id]);
+    memeIndex = 0;
+});
+});
 }
