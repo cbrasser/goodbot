@@ -1,4 +1,4 @@
-.q{
+{
   "name": "ClaDosBot",
   "version": "1.0.0",
   "description": "",
@@ -13,9 +13,11 @@
     "discord.js": "^11.3.0",
     "express.js": "^1.0.0",
     "log4js": "^2.5.3",
+    "node-opus": "^0.3.0",
     "sqlite": "^2.9.1",
     "sqlite3": "^3.1.13",
-    "winston": "^2.4.0"
+    "winston": "^2.4.0",
+    "ytdl-core": "^0.20.4"
   },
   "devDependencies": {
     "dotenv": "^5.0.1"

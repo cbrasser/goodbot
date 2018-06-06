@@ -18,4 +18,4 @@ exports.run = async function (client, message, args) {
         getGif(message);
     }
 
-}   
+}
