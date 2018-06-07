@@ -61,12 +61,40 @@ exports.run = (client, message, args) => {
                 },
                 {
                     name: "!gif [tag]",
-                    value: "Random Giph with specified tag (can be left out)"
+                    value: "Random Giph with (optional) tag"
                 },
                 {
-                    name: "!sticker [tag]",
-                    value: "Random Sticker with specified tag (can be left out)"
-                }
+                    name: "!arf",
+                    value: "Doggo can talk, too"
+                },
+                {
+                    name: "!atw",
+                    value: "What percentage of the work was done ?"
+                },
+                {
+                    name: "!ey",
+                    value: "when something is surprisingly not utter garbage"
+                },
+                {
+                    name: "!hey",
+                    value: "The only greeting that should be accepted across the whole universe"
+                },
+                {
+                    name: "!wasup",
+                    value: "The only follow up that should be accepted when greeted appropriately"
+                },
+                {
+                    name: "!wuba",
+                    value: "When you have to express your inner pain"
+                },
+                {
+                    name: "!say",
+                    value: "Let the doggo make a statement, currently only available for admins"
+                },
+                {
+                    name: "!drop",
+                    value: "Quick random drop spot for ForniteBR"
+             }
             ],
             timestamp: new Date(),
 
