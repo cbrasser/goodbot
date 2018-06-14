@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const fs = require("fs");
-exports.run = async (client, message, fileurl) => {
+exports.run = async (client, message, fileurl, isYtVid) => {
     let channel;
     if(!message.member.voiceChannel) {
         return message.reply('join a voice channel fam')
@@ -23,12 +23,17 @@ exports.run = async (client, message, fileurl) => {
         if (this.cmdProps.skipIfPlaying && client.voiceConnections.get(message.channel.guild.id)) {
             client.voiceConnections.get(message.channel.guild.id).stopPlay}
     }
-
-
     const ytdl = require('ytdl-core');
     const streamOptions = { seek: 0, volume: 0.4 };
     const conn = await channel.join();
-    conn.playArbitraryInput(fileurl, streamOptions);
+    if(isYtVid){
+        const stream = ytdl(fileurl, { filter : 'audioonly' });
+        const dispatcher = conn.playStream(stream, streamOptions); 
+    }else{
+        conn.playArbitraryInput(fileurl, streamOptions);
+    }
+
+    
 
     setTimeout(() => checkBorkVoice(client,message.channel), 5000)
 

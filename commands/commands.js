@@ -7,16 +7,17 @@ exports.run = (client, message, args) => {
             },
             title: "commands",
             description: "Everything I can do =)",
-            fields: [{
-                name: "!pet",
-                value: "Thank me for my services"
-            },
+            fields: [
                 {
-                    name: "!goodboyCount",
+                    name: "!pet",
+                    value: "Thank me for my services"
+                },
+                {
+                    name: "!goodboycount",
                     value: "See how much of a good boy i am"
                 },
                 {
-                    name: "!points/!level",
+                    name: "![points|level]",
                     value: "See how much time you wasted in here.."
                 },
                 {
@@ -64,37 +65,30 @@ exports.run = (client, message, args) => {
                     value: "Random Giph with (optional) tag"
                 },
                 {
-                    name: "!arf",
-                    value: "Doggo can talk, too"
-                },
-                {
-                    name: "!atw",
-                    value: "What percentage of the work was done ?"
-                },
-                {
-                    name: "!ey",
-                    value: "when something is surprisingly not utter garbage"
-                },
-                {
-                    name: "!hey",
-                    value: "The only greeting that should be accepted across the whole universe"
-                },
-                {
-                    name: "!wasup",
-                    value: "The only follow up that should be accepted when greeted appropriately"
-                },
-                {
-                    name: "!wuba",
-                    value: "When you have to express your inner pain"
-                },
-                {
-                    name: "!say",
-                    value: "Let the doggo make a statement, currently only available for admins"
-                },
-                {
                     name: "!drop",
                     value: "Quick random drop spot for ForniteBR"
-             }
+             },
+                {
+                    name: "Voice Commands: ![wuba|wasup|hey|ey|atw|arf|no]",
+                    value: "\"The perfect line for every situation\" - Abraham Lincoln"
+                },
+                {
+                    name: "!yt [Link]",
+                    value: "Play the audio of a youtube video in your voice channel"
+                },
+                {
+                    name: "!question [question][?]",
+                    value: "Get an answer to all your questions"
+                },
+                {
+                    name: "![rndclip|rndsnipe]",
+                    value: "Random youtube video of a clip or a snipe"
+                },
+                {
+                    name: "!meme",
+                    value: "Spicy meme served hot and fresh"
+                }
+
             ],
             timestamp: new Date(),
 

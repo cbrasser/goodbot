@@ -42,6 +42,7 @@ client.on('message', message => {
     if (message.channel.type === "dm") return;
     //we don't want to track points for bots
     if (!message.author.bot) {
+
         //quick reply for messages specified above as a response Object
         if (responseObject[message.content]) {
             message.channel.send(responseObject[message.content]);
