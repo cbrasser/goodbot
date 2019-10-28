@@ -1,32 +1,46 @@
-require('dotenv').config()
 const prefixes = ['!', 'doggo '];
-const responseObject = {
+var responseObject = {
     "ayy": "Ayy, lmao!",
-    "lol": "You mean: roflmao",
     "mod": "You mean: Faggot?",
     "yolo": "You mean: Carpe Diem?",
-    "NFA": "Acronym for: No Fun Allowed"
+    "NFA": "Acronym for: No Fun Allowed",
+    "Nioransa": "You mean: spaghett?",
 };
-const token = process.env.TOKEN;
 
 //Dependencies
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const http = require('http');
-const express = require('express');
-const app = express();
+//TODO: Figure out if any of these three are actually needed
+// const http = require('http');
+// const express = require('express');
+// const app = express();
 const fs = require("fs");
-const sql = require("sqlite");
-const logger = require('./logger');
+const sqlite3 = require("sqlite3");
+const logger = require("./logger");
+
+// Access Discord api token
+require('dotenv').config();
+const token = process.env.TOKEN;
+
 
 logger.info('Started process at '+new Date())
 
-sql.open("./score.sqlite");
+let db = new sqlite3.Database('./.db/data.db', (err) => {
+  if (err) {
+    console.error(err.message);
+  }
+});
+
 
 client.on('ready', () => {
     console.log('AM WAKE!');
+    const channel = client.channels.find(function(channel) {return channel.name === 'devzone'});
+    if (!channel) {
+      return;
+    } else {
+    channel.send(`AM WOKE`);
+    }
 });
-
 
 fs.readdir("./commands/", (err, files) => {
     if (err) return console.error(err);
@@ -38,21 +52,24 @@ fs.readdir("./commands/", (err, files) => {
 });
 
 client.on('message', message => {
+  
     //No commands in dms allowed
-    if (message.channel.type === "dm") return;
-    //we don't want to track points for bots
+    if (message.channel.type === "dm") return; 
+    //we dont want to track points for bots
     if (!message.author.bot) {
-
-        //quick reply for messages specified above as a response Object
+      
+        //quick reply for messages specified above as a responceObject
         if (responseObject[message.content]) {
             message.channel.send(responseObject[message.content]);
         }
         //Manage points
         try {
+          console.log('trying to get command file');
             let commandFile = require(`./utility/addPoint.js`);
+            console.log(`got command file: ${commandFile}`);
             commandFile.run(client, message);
         } catch (err) {
-            console.error(err);
+            logger.error("error trying to add points: "+ err);
         }
 
 
@@ -67,7 +84,7 @@ client.on('message', message => {
             foundIndex = i;
         }
     }
-    if (found) {
+    if (found) { 
         const args = message.content.slice(prefixes[foundIndex].length).trim().split(/ +/g);
         //we dont want case sensitivity for commands
         const command = args.shift().toLowerCase();
@@ -78,11 +95,11 @@ client.on('message', message => {
                 let commandFile = require(`./commands/${command}.js`);
                 commandFile.run(client, message, args);
             } else {
-                console.log('some smartass tried to access a dir')
-                message.reply('Don\'t try to access stuff you are not allowed to, not a good boye!');
+                logger.debug('some smartass tried to access a dir')
+                message.reply('Dont try to access stuff you are not allowed to, not a good boye!');
             }
         } catch (err) {
-            console.error(err);
+            logger.error(err);
             message.reply('Could not find your command, try !commands for a list!')
         }
 
@@ -97,6 +114,11 @@ client.on('guildDelete', guild => {
 
 client.on('guildCreate',guild => {
     logger.info('I have joined guild '+guild.name+' at '+new Date());
+    const channel = guild.channels.find('name', 'general');
+    if (!channel) return;
+    channel.send(`ME BOT. ME GREET HUMANS, HAVE GOOD TIME`);
+    channel.send('(tipe !pet to pet the bot and show him who\'s a good boy and !commands to see what is available)');
+  
 })
 
 client.on('guildMemberAdd', member => {
@@ -104,8 +126,12 @@ client.on('guildMemberAdd', member => {
         let commandFile = require(`./utility/addMember.js`);
         commandFile.run(client, member);
     } catch (err) {
-        logger.error(err);
+        console.error(err);
     }
 });
 
-client.login(token);
+client.login(token).then(console.log)
+ .catch( err => {
+  console.error
+  console.log('token: '+token+' seems to be invalid');
+ });

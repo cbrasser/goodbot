@@ -1,15 +1,20 @@
 exports.run = (client, message, args) => {
-    const sql = require("sqlite");
-    sql.get(`SELECT pettage FROM botstats WHERE guildId="${message.guild.id}"`).then(row => {
-        if (!row) {
-            sql.run("INSERT INTO botstats (pettage, guildId) VALUES (?, ?)", [1,message.guild.id]);
-        } else {
-            sql.run(`UPDATE botstats SET pettage = ${row.pettage + 1} WHERE guildId="${message.guild.id}"`);
+  const sqlite3 = require("sqlite3");
+  let db = new sqlite3.Database(
+      './.db/data.db', (err) => {
+        if (err) {
+          console.error(err.message);
         }
-    }).catch(() => {
-        sql.run("CREATE TABLE IF NOT EXISTS botstats (pettage INTEGER, memeCount INTEGER, guildId TEXT)").then(() => {
-            sql.run("INSERT INTO botstats (pettage, memeCount, guildId) VALUES (?,?,?)", [1,0,message.guild.id]);
-        });
+      });
+  db.run("CREATE TABLE IF NOT EXISTS pets (petFrom TEXT, guildId TEXT)", function(error){
+    if(error){ console.log("Error creating table: "+error);}
+  });
+  db.run("INSERT INTO pets (petFrom, guildId) VALUES (?, ?)",
+    [ message.author.id, message.guild.id ], function(err) {
+      if (err){
+        console.log(err);
+      }
     });
-    message.reply('THANK YOU HOOMAN =)');
+  db.close();
+  message.reply('THANK YOU HOOMAN =)');
 }
